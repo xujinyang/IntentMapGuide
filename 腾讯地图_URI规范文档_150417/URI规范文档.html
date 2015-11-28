@@ -1,0 +1,1337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URI API</title>
+<style type="text/css">
+.body{width:85%}
+.body h2{color:red;border-bottom:1px solid #ccc}
+.body h3{color:#333}
+.body .p{font-size:12px;}
+.body .code{padding:10px;font-size:12px;line-height:18px;border:1px dashed #ccc;background:#F5F5F5}
+.body .code .codenote{color:green}
+.body .code p{margin:5px 0}
+
+.body .parals{font-size:12px;width:100%;background:#ccc}
+.body .parals thead tr td{background:#DEEBF3;text-align:center;font-weight:bold;padding:5px}
+.body .parals tbody tr td{padding:5px;background:#fff;line-height:18px}
+
+strong{background:yellow}
+
+#menu{width:14%;font-size:13px;position:fixed;top:10px;right:10px;z-index:10;border:1px solid blue;background:#fff;}
+#menu a{display:block;padding:5px;}
+#menu a:link{}
+#menu a:visited{}
+#menu a:hover{background:#f0f0f0;font-weight:bold}
+#menu a:active{}
+</style>
+
+<script type="text/javascript">
+function init(){
+	var h2s=document.getElementsByTagName('h2');
+	var m='';
+	for(var i=0;i<h2s.length;i++){
+		m+='<a href="#anchor'+ i +'">'+ h2s[i].innerHTML +'</a> ';
+		h2s[i].innerHTML='<a name="anchor'+ i +'"></a>' + h2s[i].innerHTML;
+	}
+	mu=document.createElement('div');
+	mu.id='menu';
+	mu.innerHTML=m;
+	document.body.appendChild(mu);
+	//window.onscroll=function(){
+	//	mu.style.top=(10+document.documentElement.scrollTop)+'px';
+	//}
+}
+
+</script>
+
+</head>
+
+<body onload="init()">
+<div class="body">
+
+
+	<div class="p">
+		<h2>概要</h2>
+		使用本服务须对参数值进行urlencode编码
+	</div>
+
+	<div class="p">
+		<h2>POI（地点）搜索</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/search &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/search &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>keyword</td>
+						<td>keyword=麦当劳</td>
+						<td>搜索关键字</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>region（新版支持city、region两种参数名）</td>
+						<td>region=北京</td>
+						<td>限定搜索城市</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>bound</td>
+						<td>bound=39.907293,116.368935,39.914996,116.379321</td>
+						<td>限定搜索坐标范围：<br />
+							矩形范围区域，参数需给定矩形 左下(西南) 和 右上(东北) 位置坐标<br />
+							lat,lng&lt;左下角&gt;,lat,lng&lt;右上角&gt; </td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>coord_type</td>
+						<td>coord_type=1</td>
+						<td>坐标类型，取值如下：<br/>
+						1 gps<br/>
+						<!--2 sogou经纬度<br/>
+						3 baidu经纬度<br/>
+						4 mapbar经纬度<br/>
+						5 google经纬度<br/>
+						6 sogou墨卡托<br/>-->
+						2 gcj02（默认）<br/>
+						如果用户指定该参数，则uri服务需要先进行坐标的转换，再转给Web和wap端，手机地图客户端没有经过服务中转，需要直接支持</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td>zoom</td>
+						<td>zoom=10</td>
+						<td>地图缩放级别，取值范围[1,18]，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					<!--<tr>
+						<td>poi_table</td>
+						<td>poi_table=t01004</td>
+						<td>搜索用户存储在lbs云中poi_table中的数据，用户如果指定该参数，则搜索引擎只搜索用户指定的数据表</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>key</td>
+						<td>key=XXX</td>
+						<td>开发者key，如果用户需要检索lbs云中的数据，需要提供key验证访问权限。</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+		
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/search?keyword=鼓楼&amp;region=北京<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），并显示在 [北京] 范围内的 [鼓楼] 的搜索结果，keyword支持输入公交、地址</span>
+			</p>
+			<p>
+			qqmap://map/search?keyword=小肥羊&amp;bound=39.907293,116.368935,39.914996,116.379321<br />
+			<span class="codenote">//移动端启动腾讯地图App，并在地图中显示 [指定坐标(北京西单)] 范围内的 [小肥羊] 的搜索结果</span>
+			</p>
+            <img src="1.png" width="360" height="640"/>
+		</div>
+		
+	</div>
+
+	
+	<div class="p">
+		<h2>周边POI（地点）搜索</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/search &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/search &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址，新版同时兼容qqmap和sosomap两种协议</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>keyword</td>
+						<td>keyword=麦当劳</td>
+						<td>查询关键字</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>center</td>
+						<td>center=39.907534,116.459256</td>
+						<td>中心点位置</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>radius</td>
+						<td>radius=800</td>
+						<td>以center为中心的查询范围半径，单位：米</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td>zoom</td>
+						<td>zoom=10</td>
+						<td>地图缩放级别，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>poi_table</td>
+						<td>poi_table=t01004</td>
+						<td>搜索用户存储在lbs云中poi_table中的数据，用户如果指定该参数，则搜索引擎只搜索用户指定的数据表</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>key</td>
+						<td>key=XXX</td>
+						<td>如果用户指定了poi_table，则需要指定开发者key，根据key验证访问权限。</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					<tr>
+						<td>coord_type</td>
+						<td>coord_type=1</td>
+						<td>坐标类型，取值如下：<br/>
+						1 gps<br/>
+						<!--2 sogou经纬度<br/>
+						3 baidu经纬度<br/>
+						4 mapbar经纬度<br/>
+						5 google经纬度<br/>
+						6 sogou墨卡托<br/>-->
+						2 gcj02（默认）<br/>
+						如果用户指定该参数，则uri服务需要先进行坐标的转换，再转给Web和wap端，手机地图客户端没有经过服务中转，需要直接支持</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/search?keyword=麦当劳&amp;center=39.908491,116.374328&amp;radius=1000<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），并显示 [坐标位置(西单)] 半径1000米内的麦当劳 的搜索结果</span>
+			</p>
+			<p>
+			qqmap://map/search?keyword=麦当劳&amp;center=39.908491,116.374328&amp;radius=1000<br />
+			<span class="codenote">//移动端启动腾讯地图App，以 [坐标位置(西单)] 半径1000米内的麦当劳 的搜索结果</span>
+			</p>
+            <img src="2.png" width="360" height="640"/>
+		</div>
+
+	</div>
+
+
+
+	<div class="p">
+		<h2>公交、驾车路线规划</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/routeplan &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/routeplan &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span><br />
+		</div>
+		<h3>参数说明(在新版中，所有参数名都不区分大小写)</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>type</td>
+						<td><p>type=bus<br />
+						或 type=drive</p></td>
+						<td>路线规划方式参数：<br />
+						公交：bus<br />
+						驾车
+					：drive<br />
+					步行：walk (暂不支持)</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td>from=鼓楼</td>
+						<td>起点名称
+							
+						</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>fromcoord</td>
+						<td>fromcoord=39.907380,116.388501<br />
+						fromcoord=CurrentLocation</td>
+						<td>起点坐标：起点坐标优化级高于起点名称<br />
+							功能参数值：<strong>CurrentLocation</strong> ：使用定位点作为起点坐标（仅用于移动端）</td>
+						<td rowspan="2" align="center">必填<br />
+							其一</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>fromuid</td>
+						<td>fromuid=10036703382306591797</td>
+						<td><strong>? 起点POI ID</strong></td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>fromcity</td>
+						<td>fromcity=北京</td>
+						<td><strong>? 起点所在城市</strong></td>
+						<td align="center">N</td>
+						<td align="center">暂不支持</td>
+						<td align="center">暂不支持</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>to</td>
+						<td>to=奥林匹克森林公园</td>
+						<td>终点名称</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>tocoord</td>
+						<td>tocoord=40.010024,116.392239<br />
+							tocoord=CurrentLocation</td>
+						<td>终点坐标：终点坐标优先级高于终点名称<br />
+						功能参数值：<strong>CurrentLocation</strong> ：使用定位点作为终点坐标（仅用于移动端）</td>
+						<td rowspan="2" align="center">必填<br />
+							其一</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>touid</td>
+						<td>touid=879764101861325484</td>
+						<td><strong>? 终点POI ID</strong></td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>tocity</td>
+						<td>tocity=北京</td>
+						<td><strong>? 终点所在城市</strong></td>
+						<td align="center">N</td>
+						<td align="center">暂不支持</td>
+						<td align="center">暂不支持</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>coord_type</td>
+						<td>coord_type=1</td>
+						<td>坐标类型，取值如下：<br/>
+						1 gps<br/>
+						<!--2 sogou经纬度<br/>
+						3 baidu经纬度<br/>
+						4 mapbar经纬度<br/>
+						5 google经纬度<br/>
+						6 sogou墨卡托<br/>-->
+						2 gcj02（默认）<br/>
+						如果用户指定该参数，则uri服务需要先进行坐标的转换，再转给Web和wap端，手机地图客户端没有经过服务中转，需要直接支持</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>policy</td>
+						<td>policy=1</td>
+						<td>选路方式：
+							 本参数可选值取决于type<br />
+						    <table>
+							 	<tr>
+									<td valign="top" style="padding-right:10px">公交：type=bus<br />
+										0：较快捷 <br />
+										1：少换乘<br />
+										2：少步行<br />
+										3：不坐地铁
+									</td>
+									<td valign="top" style="padding-left:10px;border-left:1px solid #ccc">驾车：type=drive<br />
+										0：较快捷 <br />
+										1：无高速<br />
+										2：距离
+									</td>
+								</tr>
+							 </table></td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td>zoom</td>
+						<td>zoom=10</td>
+						<td>地图缩放级别，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/routeplan?type=bus&amp;from=天坛南门&amp;tocoord=39.907380,116.388501<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），并显示从出发点[天坛南门] 到 [目的地坐标(国家大剧院)] 的公交乘坐路线规划</span>
+			</p>
+			<p>
+			qqmap://map/routeplan?type=drive&amp;from=天坛南门&amp;fromcoord=39.873145,116.413306&amp;to=国家大剧院&amp;tocoord=39.907380,116.388501<br />
+			<span class="codenote">//移动端启动腾讯地图App，并显示从出发点[天坛南门] 到 [目的地坐标(国家大剧院)] 的驾车路线规划</span>
+			</p>
+            <img src="3.png" width="360" height="640"/>
+		</div>
+		
+	</div>
+	
+	<!--<div class="p">
+		<h2>公交行驶路线</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/busline &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/busline &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>keyword</td>
+						<td>keyword=300路快</td>
+						<td>查询的路线名</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>city</td>
+						<td>city=北京</td>
+						<td>查询城市</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>zoom</td>
+						<td>zoom=10</td>
+						<td>地图缩放级别，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/busline?keyword=300路&amp;city=北京<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），并显示 [北京300路] 公交车的行驶路线</span>
+			</p>
+			<p>
+			qqmap://map/busline?keyword=72&amp;city=上海<br />
+			<span class="codenote">//移动端启动腾讯地图App，并显示 [上海72路] 公交车的行驶路线</span>
+			</p>
+		</div>
+	</div>-->
+	
+	
+	<!--<div class="p">
+		<h2>POI（地点）详情展示：</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/detail &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/detail &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>uid</td>
+						<td>uid=4478872004779949464</td>
+						<td>POI ID</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>zoom</td>
+						<td>zoom=10</td>
+						<td>地图缩放级别，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+		
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/detail?uid=4478872004779949464<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），Web版，在指定地点显示标注(Marker)，同时展开信息窗口，Webapp显示详情页</span></p>
+			<p>
+			qqmap://map/detail?uid=4478872004779949464<br />
+			<span class="codenote">//移动端启动腾讯地图App，并显示指定地点详情页</span>
+			</p>
+		</div>
+		
+	</div>
+
+
+	<div class="p">
+		<h2><strong>地址解析</strong></h2>
+		<div>
+			<strong>由名称得到具体POI经纬度的过程，请参照POI搜索</strong>
+		</div>
+
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/geocoder &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/geocoder &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+				</tr></thead>
+				<tbody>
+					<tr>
+						<td>address</td>
+						<td>address=</td>
+						<td>地址名</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+	</div>-->
+
+	<div class="p">
+		<h2>反(逆)地址解析</h2>
+		由经纬度得到具体POI信息的过程,具体展示界面同Marker标注接口
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/geocoder &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/geocoder &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>coord</td>
+						<td>coord=39.904956,116.389449</td>
+						<td>lat&lt;纬度&gt;,lng&lt;经度&gt;</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>coord_type</td>
+						<td>coord_type=1</td>
+						<td>坐标类型，取值如下：<br/>
+						1 gps<br/>
+						<!--2 sogou经纬度<br/>
+						3 baidu经纬度<br/>
+						4 mapbar经纬度<br/>
+						5 google经纬度<br/>
+						6 sogou墨卡托<br/>-->
+						2 gcj02（默认）<br/>
+						如果用户指定该参数，则uri服务需要先进行坐标的转换，再转给Web和wap端，手机地图客户端没有经过服务中转，需要直接支持</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td>zoom</td>
+						<td>zoom=10</td>
+						<td>地图缩放级别，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+		
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/geocoder?coord=39.904956,116.389449<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），并显示 [坐标位置] 的 POI信息 </span>
+			</p>
+			<p>
+			qqmap://map/geocoder?coord=39.904956,116.389449<br />
+			<span class="codenote">//移动端启动腾讯地图App，并显示 [坐标位置] 的 POI信息 </span>
+			</p>
+            <img src="4.png" width="360" height="640"/>
+		</div>
+		
+	</div>
+
+
+
+
+	<div class="p">
+		<a name="marker"></a>
+		<h2>Marker（标注）</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/marker &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://map/marker &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>coord_type</td>
+						<td>coord_type=1</td>
+						<td>坐标类型，取值如下：<br/>
+						1 gps<br/>
+						<!--2 sogou经纬度<br/>
+						3 baidu经纬度<br/>
+						4 mapbar经纬度<br/>
+						5 google经纬度<br/>
+						6 sogou墨卡托<br/>-->
+						2 gcj02（默认）<br/>
+						如果用户指定该参数，则uri服务需要先进行坐标的转换，再转给Web和wap端，手机地图客户端没有经过服务中转，需要直接支持</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>marker</td>
+						<td>&nbsp;</td>
+						<td>marker参数用于定义具体标注的属性，如标注标题，这类参数有coord、title、addr、tel、uid、pano，marker参数格式：location1|location2|...，<br />
+							每个location就是一个marker，有一些子参数，具体格式为key:value;key:value;key:value.....<br />
+							（key与value间用英文冒号分隔，各子参数间用英文分号分隔）</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td rowspan="2">公共子参数</td>
+						<td>icon</td>
+						<td>指定图标，是一个图片url，用户可以不指定，使用默认图标，如果用户指定，则以该参数图标的底部中心点作为锚点</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					
+					<tr>
+						<td rowspan="6">&nbsp;</td>
+						<td>coord:39.892326,116.342763</td>
+						<td>标注点的位置坐标：<br />
+							lat,lng,height&lt;街景可选参数&gt;
+						</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>title:超好吃冰激凌</td>
+						<td>标注点名称</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>addr:北京市手帕口桥北铁路道口</td>
+						<td>地址</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>tel:010-88888888</td>
+						<td>电话</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>uid:11031837053015339230</td>
+						<td>该参数将指定一个POI的唯一标识，可根据id获取腾讯基础库中的POI详情</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>pano:10011005120205135839100</td>
+						<td>街景ID，用于显示标注信息窗口中的街景链接</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td>zoom</td>
+						<td>zoom=10</td>
+						<td>地图缩放级别，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+                    <tr>
+						<td>bound</td>
+						<td>bound=40.003583,81.323414,<br/>46.143583,87.343414</td>
+						<td>底图展示范围</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+
+		<h3>调用示例</h3>
+		
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/marker?coord_type=1&marker=coord:39.892326,116.342763;title:超好吃冰激凌;addr:手帕口桥北铁路道口|coord:40.892326,115.342763;title:超好吃冰激凌;addr:手帕口桥北铁路道口<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），并在指定的几个坐标位置显示Marker，同时打开第一个marker的infowindow</span></p>
+			<p>
+			qqmap://map/marker?coord_type=1&marker=coord:39.892326,116.342763;title:超好吃冰激凌;addr:手帕口桥北铁路道口|coord:40.892326,115.342763;title:超好吃冰激凌;addr:手帕口桥北铁路道口<br />
+			<span class="codenote">//移动端启动腾讯地图App，并在坐标位置显示Marker</span>
+			</p>
+            <img src="5.png" width="360" height="640"/>
+		</div>
+		
+	</div>
+
+
+
+	<div class="p">
+		<h2>街景</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/streetview &nbsp;&nbsp;&nbsp;<span class="codenote">//Web/Wap调用地址</span><br />
+			qqmap://streetview &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>pano</td>
+						<td>pano=10011005120205135839100</td>
+						<td>街景场景ID</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>heading</td>
+						<td>heading=90</td>
+						<td>偏航角度：与正北夹角度数，取值范围：0-360<br />
+（北：0°东：90°南：180°西：270° ）<br /></td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>pitch</td>
+						<td>pitch=90</td>
+						<td>俯仰角度：正上方为 -90 度，正下方为 90 度，水平为0度</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>coord_type</td>
+						<td>coord_type=1</td>
+						<td>坐标类型，取值如下：<br/>
+						1 gps<br/>
+						<!--2 sogou经纬度<br/>
+						3 baidu经纬度<br/>
+						4 mapbar经纬度<br/>
+						5 google经纬度<br/>
+						6 sogou墨卡托<br/>-->
+						2 gcj02（默认）<br/>
+						如果用户指定该参数，则uri服务需要先进行坐标的转换，再转给Web和wap端，手机地图客户端没有经过服务中转，需要直接支持</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>marker</td>
+						<td>&nbsp;</td>
+						<td>marker参数用于定义具体标注的属性，如标注标题，这类参数有coord、title、addr、tel、uid、pano，marker参数格式：location1|location2|...，<br />
+							每个location就是一个marker，有一些子参数，具体格式为key:value;key:value;key:value.....<br />
+							（key与value间用英文冒号分隔，各子参数间用英文分号分隔）</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td rowspan="2">公共子参数</td>
+						<td>icon</td>
+						<td>指定图标，是一个图片url，用户可以不指定，使用默认图标，如果用户指定，则以该参数图标的底部中心点作为锚点</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					
+					<tr>
+						<td rowspan="6">&nbsp;</td>
+						<td>coord:39.892326,116.342763</td>
+						<td>标注点的位置坐标：<br />
+							lat,lng,height&lt;街景可选参数&gt;
+						</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>title:超好吃冰激凌</td>
+						<td>标注点名称</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>addr:北京市手帕口桥北铁路道口</td>
+						<td>地址</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>tel:010-88888888</td>
+						<td>电话</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>uid:11031837053015339230</td>
+						<td>该参数将指定一个POI的唯一标识，可根据id获取腾讯基础库中的POI详情</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>pano:10011005120205135839100</td>
+						<td>街景ID，用于显示标注信息窗口中的街景链接</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<!--<tr>
+						<td>zoom</td>
+						<td>zoom=1</td>
+						<td>街景缩放级别，取值范围[1,4]，若不指定，则按最佳视野级别</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>-->
+					<tr>
+						<td>poi</td>
+						<td>poi=1</td>
+						<td>街景中的重点POI是否显示，0表示隐藏，1表示显示。默认0</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">实现但不开放</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>address</td>
+						<td>address=1</td>
+						<td>街景中标示街景当前所在位置的地址栏是否显示，0表示隐藏，1表示显示。默认1</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">实现但不开放</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>direction</td>
+						<td>direction=1</td>
+						<td>街景中标示道路方向的箭头组件是否显示，0表示隐藏，1表示显示。默认1</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">实现但不开放</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>minimap</td>
+						<td>minimap=1</td>
+						<td>街景中显示当前场景所在位置的二维地图小窗口是否显示，0表示隐藏，1表示显示。默认1</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">实现但不开放</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>referer</td>
+						<td>referer=可口可乐</td>
+						<td>调用来源，为了保障对您的服务，请务必填写！</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+
+		<div class="code">
+			<p>
+			http://apis.map.qq.com/uri/v1/streetview?pano=10011005120205135839100<br />
+			<span class="codenote">//链接打开腾讯地图（自动识别Web/Webapp平台），并显示指定街景 </span>
+			</p>
+			<p>
+			qqmap://streetview?pano=10011005120205135839100&amp;heading=30&amp;pitch=10<br />
+			<span class="codenote">//移动端启动腾讯地图App，并显示指定街景，视角为偏航(与正北夹角)30度，仰角10度</span>
+			</p>
+            <img src="6.png" width="360" height="640"/>
+		</div>
+
+
+	</div>
+
+
+
+
+	<div class="p">
+		<h2>问题记录</h2>
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/nav?from=天坛南门&amp;tocoord=39.907380,116.388501<br />
+			<span class="codenote">驾车接口，目的地使用坐标时报js错误</span>
+		</div><br />
+		
+		<div class="code">
+			http://apis.map.qq.com/uri/v1/around?keyword=麦当劳&amp;center=39.908491,116.374328&amp;radius=1000<br />
+			<span class="codenote">周边搜索js报错</span>
+		</div><br />
+	</div>
+	
+    <div class="p">
+		<h2>路宝——定位到指定POI(地点)</h2>
+		<h3>服务地址</h3>
+		<div class="code">
+			lubao://locationByPOI &nbsp;&nbsp;&nbsp;<span class="codenote">// Android 和 IOS 调用地址</span>
+		</div>
+		<h3>参数说明</h3>
+			<table cellspacing="1" class="parals">
+				<thead><tr>
+					<td>参数</td>
+					<td>示例</td>
+					<td>说明</td>
+					<td width="40">必填</td>
+					<td width="40">web</td>
+					<td width="40">触屏</td>
+					<td width="40">android</td>
+					<td width="40">IOS</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>latitude</td>
+						<td>latitude=37.840420</td>
+						<td>指定地点的纬度</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>longitude</td>
+						<td>longitude=117.095460</td>
+						<td>指定地点的经度</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+                    <tr>
+						<td>name</td>
+						<td>name=济乐高速</td>
+						<td>指定地点的名称</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+                    <tr>
+						<td>address</td>
+						<td>address=山东省德州市乐陵市</td>
+						<td>指定地点的地址</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+                    <tr>
+						<td>poiId</td>
+						<td>poiId=9193730358662020912</td>
+						<td>指定地点的poiId</td>
+						<td align="center">N</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>centerLat</td>
+						<td>centerLat=37.309040</td>
+						<td>地图中心点的纬度</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>centerLng</td>
+						<td>centerLng=117.157180</td>
+						<td>地图中心点的经度</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>scale</td>
+						<td>scale=14</td>
+						<td>地图缩放级别</td>
+						<td align="center">Y</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+						<td align="center">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		<h3>调用示例</h3>
+
+		<div class="code">			
+			<p>
+			lubao://locationByPOI?poiId=9193730358662020912&latitude=37.840420&longitude=117.095460&centerLat=37.309040&centerLng=117.157180&scale=14&name=济乐高速&address=山东省德州市乐陵市<br />
+			<span class="codenote">//移动端启动腾讯路宝App，定位到济乐高速</span>
+			</p>
+		</div>
+
+	</div>
+	
+</div>
+
+</body>
+</html>
